@@ -1,3 +1,4 @@
+const e = require("cors");
 const { BadRequestError } = require("../expressError");
 
 /** Formats data for use in a SQL update
@@ -39,19 +40,27 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
 
 function sqlForCompanyFilter(filterCriteria) {
   const keys = Object.keys(filterCriteria);
+  if (keys.length === 0) {
+    return false;
+  }
+  if (keys.length > 3) {
+    throw new BadRequestError("Too many fields");
+  }
   let filterArr = [];
-  if (keys["name"]) {
-    filterArr.push(`name ILIKE $${keys.indexOf("name")} + 1`);
-  }
-  if (keys["minEmployess"]) {
-    filterArr.push(`num_employees >= $${keys.indexOf(minEmployes)} + 1`);
-  }
-  if (keys["maxEmployees"]) {
-    filterArr.push(`num_employees <= $${keys.indexOf(maxEmployees)} + 1`);
+  for (let i = 0; i < keys.length; i++) {
+    if (keys[i] === "name") {
+      filterArr.push(`name ILIKE $${i + 1}`);
+    } else if (keys[i] === "minEmployees") {
+      filterArr.push(`num_employees >= $${i + 1}`);
+    } else if (keys[i] === "maxEmployees") {
+      filterArr.push(`num_employees <= $${i + 1}`);
+    } else {
+      throw new BadRequestError(`Unaccepted field: ${keys[i]}`);
+    }
   }
 
   return {
-    filterClause: filterArr.join(" AND"),
+    filterClause: filterArr.join(" AND "),
     values: Object.values(filterCriteria),
   };
 }
