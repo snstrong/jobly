@@ -14,7 +14,7 @@ const { BadRequestError } = require("../expressError");
  * Returns {setCols: "first_name, last_name", values: ["Hedy", "Lamarr"]}
  */
 
-function sqlForPartialUpdate(dataToUpdate, jsToSql) {
+function sqlizeReqData(dataToUpdate, jsToSql) {
   const keys = Object.keys(dataToUpdate);
   if (keys.length === 0) throw new BadRequestError("No data");
 
@@ -29,4 +29,4 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   };
 }
 
-module.exports = { sqlForPartialUpdate };
+module.exports = { sqlizeReqData };
