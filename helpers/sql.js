@@ -29,7 +29,7 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   };
 }
 
-/** Formats data for use in SQL filter clause
+/** Formats data for use in filtering companies
  *
  * filterCriteria: {name, minEmployees, maxEmployees}
  * returns {filterClause: "", values: []}
@@ -37,7 +37,7 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
 
 // WHERE name=$1 AND num_people>=$2 (minEmployees) AND num_people<=$3 (maxEmployees)
 
-function sqlForFilter(filterCriteria) {
+function sqlForCompanyFilter(filterCriteria) {
   const keys = Object.keys(filterCriteria);
   let filterArr = [];
   if (keys["name"]) {
@@ -56,4 +56,4 @@ function sqlForFilter(filterCriteria) {
   };
 }
 
-module.exports = { sqlForPartialUpdate };
+module.exports = { sqlForPartialUpdate, sqlForCompanyFilter };
