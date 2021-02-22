@@ -29,4 +29,31 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   };
 }
 
+/** Formats data for use in SQL filter clause
+ *
+ * filterCriteria: {name, minEmployees, maxEmployees}
+ * returns {filterClause: "", values: []}
+ */
+
+// WHERE name=$1 AND num_people>=$2 (minEmployees) AND num_people<=$3 (maxEmployees)
+
+function sqlForFilter(filterCriteria) {
+  const keys = Object.keys(filterCriteria);
+  let filterArr = [];
+  if (keys["name"]) {
+    filterArr.push(`name ILIKE $${keys.indexOf("name")} + 1`);
+  }
+  if (keys["minEmployess"]) {
+    filterArr.push(`num_employees >= $${keys.indexOf(minEmployes)} + 1`);
+  }
+  if (keys["maxEmployees"]) {
+    filterArr.push(`num_employees <= $${keys.indexOf(maxEmployees)} + 1`);
+  }
+
+  return {
+    filterClause: filterArr.join(" AND"),
+    values: Object.values(filterCriteria),
+  };
+}
+
 module.exports = { sqlForPartialUpdate };
