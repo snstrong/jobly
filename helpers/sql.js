@@ -58,6 +58,7 @@ function sqlForCompanyFilter(filterCriteria) {
       throw new BadRequestError(`Unaccepted field: ${keys[i]}`);
     }
   }
+  filterCriteria.name = `%${filterCriteria.name}%`;
 
   return {
     filterClause: filterArr.join(" AND "),

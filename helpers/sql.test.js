@@ -42,7 +42,7 @@ describe("sqlForCompanyFilter", function () {
     expect(results.filterClause).toEqual(
       "name ILIKE $1 AND num_employees >= $2 AND num_employees <= $3"
     );
-    expect(results.values).toEqual(["Hedy", 1, 2]);
+    expect(results.values).toEqual(["%Hedy%", 1, 2]);
   });
   test("works: handles request with bad field", function () {
     let filterCriteria = { name: "Hedy", minEmployees: 1, mxxxxxxEmployees: 2 };
