@@ -36,8 +36,6 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
  * returns {filterClause: "", values: []}
  */
 
-// WHERE name=$1 AND num_people>=$2 (minEmployees) AND num_people<=$3 (maxEmployees)
-
 function sqlForCompanyFilter(filterCriteria) {
   const keys = Object.keys(filterCriteria);
   if (keys.length === 0) {
@@ -50,6 +48,7 @@ function sqlForCompanyFilter(filterCriteria) {
   for (let i = 0; i < keys.length; i++) {
     if (keys[i] === "name") {
       filterArr.push(`name ILIKE $${i + 1}`);
+      filterCriteria.name = `%${filterCriteria.name}%`;
     } else if (keys[i] === "minEmployees") {
       filterArr.push(`num_employees >= $${i + 1}`);
     } else if (keys[i] === "maxEmployees") {
@@ -58,7 +57,6 @@ function sqlForCompanyFilter(filterCriteria) {
       throw new BadRequestError(`Unaccepted field: ${keys[i]}`);
     }
   }
-  filterCriteria.name = `%${filterCriteria.name}%`;
 
   return {
     filterClause: filterArr.join(" AND "),
