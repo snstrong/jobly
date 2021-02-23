@@ -50,10 +50,13 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
  */
 
 router.get("/", async function (req, res, next) {
-  console.log(`QUERY NAME: ${req.query.name}`);
-  // TODO: Validate here w/ sqlForCompanyFilter, then refactor model
+  // TODO: Validate here w/ JSON schema, then update sqlForCompanyFilter & model accordingly
   try {
-    const companies = await Company.findAll();
+    if (Object.keys(req.query).length === 0) {
+      const companies = await Company.findAll();
+      return res.json({ companies });
+    }
+    const companies = await Company.filter(req.query);
     return res.json({ companies });
   } catch (err) {
     return next(err);
