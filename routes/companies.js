@@ -51,6 +51,7 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 
 router.get("/", async function (req, res, next) {
   // TODO: Validate here w/ JSON schema, then update sqlForCompanyFilter & model accordingly
+  // Currently validation is being done w/ conditionals in sqlForCompanyFilter, which is called in the company model
   try {
     if (Object.keys(req.query).length === 0) {
       const companies = await Company.findAll();
