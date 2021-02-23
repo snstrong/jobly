@@ -2,7 +2,7 @@
 
 const db = require("../db");
 const { BadRequestError, NotFoundError } = require("../expressError");
-const { sqlForPartialUpdate } = require("../helpers/sql");
+const { sqlForPartialUpdate, sqlForCompanyFilter } = require("../helpers/sql");
 
 /** Related functions for companies. */
 
@@ -62,8 +62,8 @@ class Company {
    * Will match results that contain whatever is given as "name", case-insensitive, not just exact matches
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
-
   static async filter(criteria) {
+    const sqlized = sqlForCompanyFilter(criteria);
     const companiesRes = await db.query(
       `SELECT handle,
                   name,
@@ -71,8 +71,12 @@ class Company {
                   num_employees AS "numEmployees",
                   logo_url AS "logoUrl"
            FROM companies
-           ORDER BY name`
+           WHERE ${sqlized.filterClause}`,
+      sqlized.values
     );
+    if (companiesRes.rows.length === 0) {
+      return false;
+    }
     return companiesRes.rows;
   }
 

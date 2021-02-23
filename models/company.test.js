@@ -2,6 +2,7 @@
 
 const db = require("../db.js");
 const { BadRequestError, NotFoundError } = require("../expressError");
+const { filter } = require("./company.js");
 const Company = require("./company.js");
 const {
   commonBeforeAll,
@@ -91,14 +92,77 @@ describe("findAll", function () {
 /************************************** filter */
 
 describe("filter", function () {
-  test("filters based on name", async function () {
-    let criterion = { name: "C1" };
+  test("works: filters based on name", async function () {
+    let criterion = { name: "C" };
     let filteredCompanies = await Company.filter(criterion);
-    // expect arr to contain
+    expect(filteredCompanies).toEqual([
+      {
+        handle: "c1",
+        name: "C1",
+        description: "Desc1",
+        numEmployees: 1,
+        logoUrl: "http://c1.img",
+      },
+      {
+        handle: "c2",
+        name: "C2",
+        description: "Desc2",
+        numEmployees: 2,
+        logoUrl: "http://c2.img",
+      },
+      {
+        handle: "c3",
+        name: "C3",
+        description: "Desc3",
+        numEmployees: 3,
+        logoUrl: "http://c3.img",
+      },
+    ]);
   });
-  test("filters based on min/max employees", async function () {});
-  test("filters based on all three criteria", async function () {});
-  test("returns no matched results", async function () {});
+  test("works: filters based on min/max employees", async function () {
+    let criteria = { minEmployees: 2, maxEmployees: 3 };
+    let filteredCompanies = await Company.filter(criteria);
+    expect(filteredCompanies).toEqual([
+      {
+        handle: "c2",
+        name: "C2",
+        description: "Desc2",
+        numEmployees: 2,
+        logoUrl: "http://c2.img",
+      },
+      {
+        handle: "c3",
+        name: "C3",
+        description: "Desc3",
+        numEmployees: 3,
+        logoUrl: "http://c3.img",
+      },
+    ]);
+  });
+  test("works: filters based on all three criteria", async function () {
+    let criteria = {
+      name: "C",
+      minEmployees: "3",
+      maxEmployees: "90",
+    };
+    let filteredCompanies = await Company.filter(criteria);
+    expect(filteredCompanies).toEqual([
+      {
+        handle: "c3",
+        name: "C3",
+        description: "Desc3",
+        numEmployees: 3,
+        logoUrl: "http://c3.img",
+      },
+    ]);
+  });
+  test("works: returns false for no matched results", async function () {
+    let criteria = {
+      name: "Apple",
+    };
+    let filteredCompanies = await Company.filter(criteria);
+    expect(filteredCompanies).toBe(false);
+  });
 });
 
 /************************************** get */
