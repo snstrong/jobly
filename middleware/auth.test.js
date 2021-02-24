@@ -2,7 +2,12 @@
 
 const jwt = require("jsonwebtoken");
 const { UnauthorizedError } = require("../expressError");
-const { authenticateJWT, ensureLoggedIn, ensureAdmin } = require("./auth");
+const {
+  authenticateJWT,
+  ensureLoggedIn,
+  ensureAdmin,
+  ensureAdminOrCorrectUser,
+} = require("./auth");
 
 const { SECRET_KEY } = require("../config");
 const testJwt = jwt.sign({ username: "test", isAdmin: false }, SECRET_KEY);
@@ -88,5 +93,36 @@ describe("ensureAdmin", function () {
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };
     ensureAdmin(req, res, next);
+  });
+});
+
+describe("ensureAdminOrCorrectUser", function () {
+  test("works for admin", function () {
+    const req = {};
+    const res = { locals: { user: { username: "test", isAdmin: true } } };
+    const next = function (err) {
+      expect(err).toBeFalsy();
+    };
+    ensureAdminOrCorrectUser(req, res, next);
+  });
+
+  // FAILING
+  test("works for correct user, non-admin", function () {
+    const req = {};
+    req.params = { username: "test" };
+    const res = { locals: { user: { username: "test", isAdmin: false } } };
+    const next = function (err) {
+      expect(err).toBeFalsy();
+    };
+    ensureAdminOrCorrectUser(req, res, next);
+  });
+
+  test("unauth for anon", function () {
+    const req = {};
+    const res = { locals: {} };
+    const next = function (err) {
+      expect(err).toBeInstanceOf(UnauthorizedError);
+    };
+    ensureAdminOrCorrectUser(req, res, next);
   });
 });
