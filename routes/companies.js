@@ -52,6 +52,7 @@ router.post("/", ensureAdmin, async function (req, res, next) {
 router.get("/", async function (req, res, next) {
   // TODO: Validate here w/ JSON schema, then update sqlForCompanyFilter & model accordingly
   // Currently validation is being done w/ conditionals in sqlForCompanyFilter, which is called in Company.filter. Both sqlForCompanyFilter and Company.filter have been thoroughly tested.
+  // TODO: update testing to reflect addition of Company.filter
   try {
     if (Object.keys(req.query).length === 0) {
       const companies = await Company.findAll();
@@ -89,10 +90,10 @@ router.get("/:handle", async function (req, res, next) {
  *
  * Returns { handle, name, description, numEmployees, logo_url }
  *
- * Authorization required: login
+ * Authorization required: admin
  */
 
-router.patch("/:handle", ensureLoggedIn, async function (req, res, next) {
+router.patch("/:handle", ensureAdmin, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, companyUpdateSchema);
     if (!validator.valid) {
@@ -109,10 +110,10 @@ router.patch("/:handle", ensureLoggedIn, async function (req, res, next) {
 
 /** DELETE /[handle]  =>  { deleted: handle }
  *
- * Authorization: login
+ * Authorization: admin
  */
 
-router.delete("/:handle", ensureLoggedIn, async function (req, res, next) {
+router.delete("/:handle", ensureAdmin, async function (req, res, next) {
   try {
     await Company.remove(req.params.handle);
     return res.json({ deleted: req.params.handle });
