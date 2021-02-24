@@ -6,7 +6,7 @@ const jsonschema = require("jsonschema");
 const express = require("express");
 
 const { BadRequestError } = require("../expressError");
-const { ensureLoggedIn } = require("../middleware/auth");
+const { ensureLoggedIn, ensureAdmin } = require("../middleware/auth");
 const Company = require("../models/company");
 
 const companyNewSchema = require("../schemas/companyNew.json");
@@ -20,10 +20,10 @@ const router = new express.Router();
  *
  * Returns { handle, name, description, numEmployees, logoUrl }
  *
- * Authorization required: login
+ * Authorization required: admin
  */
 
-router.post("/", ensureLoggedIn, async function (req, res, next) {
+router.post("/", ensureAdmin, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, companyNewSchema);
     if (!validator.valid) {
@@ -51,7 +51,7 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 
 router.get("/", async function (req, res, next) {
   // TODO: Validate here w/ JSON schema, then update sqlForCompanyFilter & model accordingly
-  // Currently validation is being done w/ conditionals in sqlForCompanyFilter, which is called in the company model
+  // Currently validation is being done w/ conditionals in sqlForCompanyFilter, which is called in Company.filter. Both sqlForCompanyFilter and Company.filter have been thoroughly tested.
   try {
     if (Object.keys(req.query).length === 0) {
       const companies = await Company.findAll();
