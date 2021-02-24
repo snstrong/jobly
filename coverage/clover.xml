@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1614130187703" clover="3.2.0">
-  <project timestamp="1614130187703" name="All files">
+<coverage generated="1614133371829" clover="3.2.0">
+  <project timestamp="1614133371829" name="All files">
     <metrics statements="323" coveredstatements="320" conditionals="82" coveredconditionals="79" methods="53" coveredmethods="52" elements="458" coveredelements="451" complexity="0" loc="323" ncloc="323" packages="5" files="14" classes="14"/>
     <package name="express-jobly">
       <metrics statements="53" coveredstatements="52" conditionals="18" coveredconditionals="16" methods="8" coveredmethods="7"/>
@@ -123,15 +123,15 @@
         <line num="22" count="26" type="stmt"/>
         <line num="24" count="47" type="stmt"/>
         <line num="26" count="1" type="stmt"/>
-        <line num="36" count="29" type="stmt"/>
-        <line num="37" count="29" type="cond" truecount="2" falsecount="0"/>
-        <line num="38" count="21" type="stmt"/>
-        <line num="40" count="8" type="stmt"/>
-        <line num="50" count="5" type="stmt"/>
-        <line num="51" count="5" type="cond" truecount="4" falsecount="0"/>
-        <line num="52" count="1" type="stmt"/>
-        <line num="54" count="4" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
+        <line num="36" count="16" type="stmt"/>
+        <line num="37" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="11" type="stmt"/>
+        <line num="40" count="5" type="stmt"/>
+        <line num="50" count="18" type="stmt"/>
+        <line num="51" count="18" type="cond" truecount="4" falsecount="0"/>
+        <line num="52" count="4" type="stmt"/>
+        <line num="54" count="14" type="stmt"/>
+        <line num="56" count="4" type="stmt"/>
         <line num="60" count="5" type="stmt"/>
       </file>
     </package>
@@ -306,33 +306,33 @@
         <line num="35" count="1" type="stmt"/>
         <line num="37" count="2" type="stmt"/>
         <line num="52" count="4" type="stmt"/>
-        <line num="55" count="2" type="stmt"/>
-        <line num="56" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="57" count="2" type="stmt"/>
-        <line num="58" count="1" type="stmt"/>
-        <line num="60" count="0" type="stmt"/>
+        <line num="56" count="2" type="stmt"/>
+        <line num="57" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="2" type="stmt"/>
+        <line num="59" count="1" type="stmt"/>
         <line num="61" count="0" type="stmt"/>
-        <line num="63" count="1" type="stmt"/>
-        <line num="75" count="4" type="stmt"/>
-        <line num="76" count="3" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="76" count="4" type="stmt"/>
         <line num="77" count="3" type="stmt"/>
-        <line num="78" count="2" type="stmt"/>
-        <line num="80" count="1" type="stmt"/>
-        <line num="95" count="4" type="stmt"/>
+        <line num="78" count="3" type="stmt"/>
+        <line num="79" count="2" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
         <line num="96" count="4" type="stmt"/>
         <line num="97" count="4" type="stmt"/>
-        <line num="98" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="99" count="2" type="stmt"/>
+        <line num="98" count="4" type="stmt"/>
+        <line num="99" count="4" type="cond" truecount="2" falsecount="0"/>
         <line num="100" count="2" type="stmt"/>
-        <line num="103" count="2" type="stmt"/>
-        <line num="104" count="1" type="stmt"/>
-        <line num="106" count="3" type="stmt"/>
-        <line num="115" count="4" type="stmt"/>
-        <line num="116" count="2" type="stmt"/>
+        <line num="101" count="2" type="stmt"/>
+        <line num="104" count="2" type="stmt"/>
+        <line num="105" count="1" type="stmt"/>
+        <line num="107" count="3" type="stmt"/>
+        <line num="116" count="4" type="stmt"/>
         <line num="117" count="2" type="stmt"/>
-        <line num="118" count="1" type="stmt"/>
-        <line num="120" count="1" type="stmt"/>
-        <line num="124" count="4" type="stmt"/>
+        <line num="118" count="2" type="stmt"/>
+        <line num="119" count="1" type="stmt"/>
+        <line num="121" count="1" type="stmt"/>
+        <line num="125" count="4" type="stmt"/>
       </file>
       <file name="users.js" path="/Users/sarastrong/Desktop/Springboard/Projects/express-jobly/routes/users.js">
         <metrics statements="44" coveredstatements="44" conditionals="4" coveredconditionals="4" methods="7" coveredmethods="7"/>
@@ -345,41 +345,41 @@
         <line num="12" count="4" type="stmt"/>
         <line num="13" count="4" type="stmt"/>
         <line num="15" count="4" type="stmt"/>
+        <line num="29" count="4" type="stmt"/>
         <line num="30" count="4" type="stmt"/>
         <line num="31" count="4" type="stmt"/>
-        <line num="32" count="4" type="stmt"/>
-        <line num="33" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="34" count="5" type="stmt"/>
-        <line num="35" count="2" type="stmt"/>
+        <line num="32" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="5" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
         <line num="38" count="2" type="stmt"/>
         <line num="39" count="2" type="stmt"/>
-        <line num="40" count="2" type="stmt"/>
-        <line num="42" count="2" type="stmt"/>
-        <line num="54" count="4" type="stmt"/>
-        <line num="55" count="2" type="stmt"/>
-        <line num="56" count="2" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="52" count="4" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
+        <line num="54" count="2" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
         <line num="57" count="1" type="stmt"/>
-        <line num="59" count="1" type="stmt"/>
-        <line num="71" count="4" type="stmt"/>
-        <line num="72" count="2" type="stmt"/>
-        <line num="73" count="2" type="stmt"/>
-        <line num="74" count="1" type="stmt"/>
-        <line num="76" count="1" type="stmt"/>
-        <line num="91" count="4" type="stmt"/>
-        <line num="92" count="4" type="stmt"/>
-        <line num="93" count="4" type="stmt"/>
-        <line num="94" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="95" count="1" type="stmt"/>
-        <line num="96" count="1" type="stmt"/>
-        <line num="99" count="3" type="stmt"/>
-        <line num="100" count="2" type="stmt"/>
-        <line num="102" count="2" type="stmt"/>
-        <line num="112" count="4" type="stmt"/>
-        <line num="113" count="2" type="stmt"/>
-        <line num="114" count="2" type="stmt"/>
-        <line num="115" count="1" type="stmt"/>
-        <line num="117" count="1" type="stmt"/>
-        <line num="122" count="4" type="stmt"/>
+        <line num="68" count="4" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="70" count="2" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="73" count="1" type="stmt"/>
+        <line num="87" count="4" type="stmt"/>
+        <line num="88" count="4" type="stmt"/>
+        <line num="89" count="4" type="stmt"/>
+        <line num="90" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="95" count="3" type="stmt"/>
+        <line num="96" count="2" type="stmt"/>
+        <line num="98" count="2" type="stmt"/>
+        <line num="107" count="4" type="stmt"/>
+        <line num="108" count="2" type="stmt"/>
+        <line num="109" count="2" type="stmt"/>
+        <line num="110" count="1" type="stmt"/>
+        <line num="112" count="1" type="stmt"/>
+        <line num="116" count="4" type="stmt"/>
       </file>
     </package>
   </project>
