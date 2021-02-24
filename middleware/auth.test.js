@@ -106,7 +106,6 @@ describe("ensureAdminOrCorrectUser", function () {
     ensureAdminOrCorrectUser(req, res, next);
   });
 
-  // FAILING
   test("works for correct user, non-admin", function () {
     const req = {};
     req.params = { username: "test" };
