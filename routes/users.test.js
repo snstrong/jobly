@@ -250,6 +250,34 @@ describe("PATCH /users/:username", () => {
     });
   });
 
+  test("works for correct user", async function () {
+    const resp = await request(app)
+      .patch(`/users/u1`)
+      .send({
+        firstName: "Newer",
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.body).toEqual({
+      user: {
+        username: "u1",
+        firstName: "Newer",
+        lastName: "U1L",
+        email: "user1@user.com",
+        isAdmin: false,
+      },
+    });
+  });
+
+  test("unauth for wrong user", async function () {
+    const resp = await request(app)
+      .patch(`/users/u2`)
+      .send({
+        firstName: "New",
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
+
   test("unauth for anon", async function () {
     const resp = await request(app).patch(`/users/u1`).send({
       firstName: "New",
@@ -301,11 +329,25 @@ describe("PATCH /users/:username", () => {
 /************************************** DELETE /users/:username */
 
 describe("DELETE /users/:username", function () {
-  test("works for admin", async function () {
+  test("works for correct user", async function () {
     const resp = await request(app)
       .delete(`/users/u1`)
-      .set("authorization", `Bearer ${u4Token}`);
+      .set("authorization", `Bearer ${u1Token}`);
     expect(resp.body).toEqual({ deleted: "u1" });
+  });
+
+  test("works for admin", async function () {
+    const resp = await request(app)
+      .delete(`/users/u2`)
+      .set("authorization", `Bearer ${u4Token}`);
+    expect(resp.body).toEqual({ deleted: "u2" });
+  });
+
+  test("unauth for wrong user", async function () {
+    const resp = await request(app)
+      .delete(`/users/u3`)
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(401);
   });
 
   test("unauth for anon", async function () {
