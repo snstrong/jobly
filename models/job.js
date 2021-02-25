@@ -28,6 +28,25 @@ class Job {
 
     return job;
   }
+
+  /** Find all jobs.
+   *
+   * Returns [{ id, title, salary, equity, companyHandle, companyName }, ...]
+   * */
+
+  static async findAll() {
+    const jobList = await db.query(
+      `SELECT j.id,
+            j.title,
+            j.salary,
+            j.equity,
+            j.company_handle AS "companyHandle",
+            c.name AS "companyName"
+        FROM jobs j 
+        LEFT JOIN companies AS c ON c.handle = j.company_handle`
+    );
+    return jobList.rows;
+  }
 }
 
 module.exports = Job;
