@@ -33,42 +33,26 @@ describe("create", function () {
   });
 });
 
-describe("findAll", function () {
+/************************************** get */
+
+describe("get", function () {
   test("works", async function () {
-    let jobs = await Job.findAll();
-    expect(jobs).toEqual([
-      {
-        id: testJobIds[0],
-        title: "Job1",
-        salary: 100,
-        equity: "0.1",
-        companyHandle: "c1",
-        companyName: "C1",
-      },
-      {
-        id: testJobIds[1],
-        title: "Job2",
-        salary: 200,
-        equity: "0.2",
-        companyHandle: "c1",
-        companyName: "C1",
-      },
-      {
-        id: testJobIds[2],
-        title: "Job3",
-        salary: 300,
-        equity: "0",
-        companyHandle: "c1",
-        companyName: "C1",
-      },
-      {
-        id: testJobIds[3],
-        title: "Job4",
-        salary: null,
-        equity: null,
-        companyHandle: "c1",
-        companyName: "C1",
-      },
-    ]);
+    let job = await Job.get(testJobIds[0]);
+    expect(job).toEqual({
+      id: testJobIds[0],
+      title: "Job1",
+      salary: 100,
+      equity: "0.1",
+      companyHandle: "c1",
+      companyName: "C1",
+    });
+  });
+  test("not found if no such job", async function () {
+    try {
+      await Job.get(865);
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
   });
 });

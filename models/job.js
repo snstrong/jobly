@@ -10,10 +10,8 @@ class Job {
   /** Create a job (from data), update db, return new job data.
    *
    * data should be { title, salary, equity, company_handle }
-   *
    * Returns { id, title, salary, equity, company_handle }
    *
-   * Throws BadRequestError if company already in database.
    * */
 
   static async create({ title, salary, equity, companyHandle }) {
@@ -46,6 +44,33 @@ class Job {
         LEFT JOIN companies AS c ON c.handle = j.company_handle`
     );
     return jobList.rows;
+  }
+
+  /** Given a job id, return data about job.
+   *
+   * Returns { id, title, salary, equity,companyHandle, companyName }
+   *
+   * Throws NotFoundError if not found.
+   **/
+  static async get(id) {
+    const jobRes = await db.query(
+      `SELECT j.id,
+            j.title,
+            j.salary,
+            j.equity,
+            j.company_handle AS "companyHandle",
+            c.name AS "companyName"
+        FROM jobs j 
+        LEFT JOIN companies AS c ON c.handle = j.company_handle
+        WHERE j.id = $1`,
+      [id]
+    );
+
+    const job = jobRes.rows[0];
+
+    if (!job) throw new NotFoundError(`No job: ${id}`);
+
+    return job;
   }
 }
 
