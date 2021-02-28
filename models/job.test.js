@@ -2,7 +2,6 @@
 
 const db = require("../db.js");
 const { BadRequestError, NotFoundError } = require("../expressError");
-const { filter } = require("./company.js");
 const Job = require("./job.js");
 const {
   commonBeforeAll,
@@ -50,6 +49,29 @@ describe("get", function () {
   test("not found if no such job", async function () {
     try {
       await Job.get(865);
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+});
+
+/************************************** update */
+
+/************************************** delete */
+
+describe("remove", function () {
+  test("works", async function () {
+    await Job.remove(testJobIds[0]);
+    const res = await db.query(
+      `SELECT id FROM jobs WHERE id ='${testJobIds[0]}'`
+    );
+    expect(res.rows.length).toEqual(0);
+  });
+
+  test("not found if no such job", async function () {
+    try {
+      await Job.remove(testJobIds[testJobIds.length + 999]);
       fail();
     } catch (err) {
       expect(err instanceof NotFoundError).toBeTruthy();
