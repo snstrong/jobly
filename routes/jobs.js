@@ -9,6 +9,9 @@ const { BadRequestError } = require("../expressError");
 const { ensureAdmin } = require("../middleware/auth");
 const Job = require("../models/job");
 
+const jobNewSchema = require("../schemas/jobNew.json");
+const jobUpdateSchema = require("../schemas/jobUpdate.json");
+
 // const companyNewSchema = require("../schemas/companyNew.json");
 // const companyUpdateSchema = require("../schemas/companyUpdate.json");
 
@@ -24,6 +27,14 @@ const router = new express.Router();
  */
 router.post("/", ensureAdmin, async function (req, res, next) {
   try {
+    const validator = jsonschema.validate(req.body, jobNewSchema);
+    if (!validator.valid) {
+      const errs = validator.errors.map((e) => e.stack);
+      throw new BadRequestError(errs);
+    }
+    const job = await Job.create(req.body);
+    console.log(job);
+    return res.status(201).json({ job });
   } catch (err) {
     return next(err);
   }
@@ -82,3 +93,5 @@ router.delete("/:id", ensureAdmin, async function (req, res, next) {
     return next(err);
   }
 });
+
+module.exports = router;
