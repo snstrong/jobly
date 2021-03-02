@@ -39,4 +39,14 @@ describe("POST /jobs", function () {
       job: { ...newJob, id: expect.any(Number) },
     });
   });
+
+  // TODO: FAILS FOR UNAUTH USER (LOGGED IN BUT NOT ADMIN, ANON)
 });
+
+/************************************** GET /jobs */
+
+/************************************** GET /jobs/:id */
+
+/************************************** PATCH /jobs/:id */
+
+/************************************** DELETE /jobs/:id */

@@ -7,8 +7,7 @@
   "examples": [
     {
       "title": "Jr Dev",
-      "salary": 60000,
-      "equity": "0.1"
+      "salary": 60000
     }
   ],
   "required": [],
