@@ -47,6 +47,8 @@ router.post("/", ensureAdmin, async function (req, res, next) {
 
 router.get("/", async function (req, res, next) {
   try {
+    const jobs = await Job.findAll();
+    return res.json({ jobs });
   } catch (err) {
     return next(err);
   }
@@ -60,6 +62,7 @@ router.get("/", async function (req, res, next) {
 
 router.get("/:id", async function (req, res, next) {
   try {
+    const job = await Job.get(Integer(req.params.id));
   } catch (err) {
     return next(err);
   }
@@ -78,6 +81,13 @@ router.get("/:id", async function (req, res, next) {
 
 router.patch("/:id", ensureAdmin, async function (req, res, next) {
   try {
+    const validator = jsonschema.validate(req.body, jobUpdateSchema);
+    if (!validator.valid) {
+      const errs = validator.errors.map((e) => e.stack);
+      throw new BadRequestError(errs);
+    }
+    const job = await Job.update(Integer(req.params.id), req.body);
+    return res.json({ job });
   } catch (err) {
     return next(err);
   }
@@ -89,6 +99,8 @@ router.patch("/:id", ensureAdmin, async function (req, res, next) {
 
 router.delete("/:id", ensureAdmin, async function (req, res, next) {
   try {
+    await Job.remove(Integer(req.params.id));
+    return res.json({ deleted: req.params.id });
   } catch (err) {
     return next(err);
   }

@@ -8,8 +8,7 @@
     {
       "title": "Jr Dev",
       "salary": 60000,
-      "equity": "0.1",
-      "company_handle": "c1"
+      "equity": "0.1"
     }
   ],
   "required": [],
@@ -36,14 +35,6 @@
       "description": "An explanation about the purpose of this instance.",
       "default": "",
       "examples": ["0.1"]
-    },
-    "company_handle": {
-      "$id": "#/properties/company_handle",
-      "type": "string",
-      "title": "The company_handle schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": "",
-      "examples": ["c1"]
     }
   },
   "additionalProperties": false
