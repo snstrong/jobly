@@ -64,4 +64,36 @@ function sqlForCompanyFilter(filterCriteria) {
   };
 }
 
-module.exports = { sqlForPartialUpdate, sqlForCompanyFilter };
+function sqlForJobFilter(filterCriteria) {
+  const keys = Object.keys(filterCriteria);
+  if (keys.length === 0) {
+    return false;
+  }
+  if (keys.length > 3) {
+    throw new BadRequestError("Too many fields");
+  }
+  let filterArr = [];
+  for (let i = 0; i < keys.length; i++) {
+    if (keys[i] === "title") {
+      filterArr.push(`title ILIKE $${i + 1}`);
+      filterCriteria.title = `%${filterCriteria.title}%`;
+    } else if (keys[i] === "minSalary") {
+      filterArr.push(`salary >= $${i + 1}`);
+    } else if (keys[i] === "hasEquity") {
+      if (filterCriteria.hasEquity === true) {
+        filterArr.push(`equity > 0`);
+      }
+    } else {
+      throw new BadRequestError(`Unaccepted field: ${keys[i]}`);
+    }
+  }
+  const filterVals = Object.values(filterCriteria);
+  const values = filterVals.filter((val) => !(typeof val === "boolean"));
+
+  return {
+    filterClause: filterArr.join(" AND "),
+    values: values,
+  };
+}
+
+module.exports = { sqlForPartialUpdate, sqlForCompanyFilter, sqlForJobFilter };

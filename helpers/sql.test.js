@@ -1,5 +1,9 @@
 const { BadRequestError } = require("../expressError");
-const { sqlForPartialUpdate, sqlForCompanyFilter } = require("./sql");
+const {
+  sqlForPartialUpdate,
+  sqlForCompanyFilter,
+  sqlForJobFilter,
+} = require("./sql");
 
 describe("sqlForPartialUpdate", function () {
   test("works: handles good request", function () {
@@ -46,9 +50,41 @@ describe("sqlForCompanyFilter", function () {
   });
   test("works: handles request with bad field", function () {
     let filterCriteria = { name: "Hedy", minEmployees: 1, mxxxxxxEmployees: 2 };
-    //   expect(() => compileAndroidCode()).toThrow(Error);
     expect(() => sqlForCompanyFilter(filterCriteria)).toThrow(
       `Unaccepted field: mxxxxxxEmployees`
     );
+  });
+});
+
+describe("sqlForJobFilter", function () {
+  test("works: returns false if no data", function () {
+    let result = sqlForJobFilter({});
+    expect(result).toBe(false);
+  });
+  test("works: Throws error if too many fields", function () {
+    let filterCriteria = {
+      title: "J",
+      minSalary: 101,
+      hasEquity: true,
+      extraField: "is here",
+    };
+    expect(() => sqlForJobFilter(filterCriteria)).toThrow("Too many fields");
+  });
+  test("works: handles good request", function () {
+    let filterCriteria = {
+      title: "J",
+      minSalary: 101,
+      hasEquity: true,
+    };
+    let results = sqlForJobFilter(filterCriteria);
+    expect(results.filterClause).toEqual(
+      "title ILIKE $1 AND salary >= $2 AND equity > 0"
+    );
+    expect(results.values).toEqual(["%J%", 101]);
+
+    filterCriteria.hasEquity = false;
+    let results2 = sqlForJobFilter(filterCriteria);
+    expect(results2.filterClause).toEqual("title ILIKE $1 AND salary >= $2");
+    expect(results.values).toEqual(["%J%", 101]);
   });
 });
