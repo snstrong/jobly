@@ -11,6 +11,7 @@ const Job = require("../models/job");
 
 const jobNewSchema = require("../schemas/jobNew.json");
 const jobUpdateSchema = require("../schemas/jobUpdate.json");
+const jobFilterSchema = require("../schemas/jobFilter.json");
 
 // const companyNewSchema = require("../schemas/companyNew.json");
 // const companyUpdateSchema = require("../schemas/companyUpdate.json");
@@ -46,7 +47,16 @@ router.post("/", ensureAdmin, async function (req, res, next) {
 
 router.get("/", async function (req, res, next) {
   try {
-    const jobs = await Job.findAll();
+    if (Object.keys(req.query).length === 0) {
+      const jobs = await Job.findAll();
+      return res.json({ jobs });
+    }
+    const validator = jsonschema.validate(req.query, jobFilterSchema);
+    if (!validator.valid) {
+      const errs = validator.errors.map((e) => e.stack);
+      throw new BadRequestError(errs);
+    }
+    const jobs = await Job.filter(req.query);
     return res.json({ jobs });
   } catch (err) {
     return next(err);

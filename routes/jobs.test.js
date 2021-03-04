@@ -14,6 +14,7 @@ const {
   u4Token,
   testJobIds,
 } = require("./_testCommon");
+const { BadRequestError } = require("../expressError");
 
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
@@ -128,6 +129,51 @@ describe("GET /jobs", function () {
       .get("/jobs")
       .set("authorization", `Bearer ${u1Token}`);
     expect(resp.statusCode).toEqual(500);
+  });
+  test("works: filters jobs", async function () {
+    const resp = await request(app).get("/jobs?title=J&minSalary=101");
+    expect(resp.body).toEqual({
+      jobs: [
+        {
+          id: expect.any(Number),
+          title: "J2",
+          salary: 200,
+          equity: "0.02",
+          companyHandle: "c2",
+          companyName: "C2",
+        },
+        {
+          id: expect.any(Number),
+          title: "J3",
+          salary: 300,
+          equity: "0.03",
+          companyHandle: "c3",
+          companyName: "C3",
+        },
+        {
+          id: expect.any(Number),
+          title: "J4",
+          salary: 400,
+          equity: "0.04",
+          companyHandle: "c1",
+          companyName: "C1",
+        },
+      ],
+    });
+  });
+  test("fails: invalid data in request", async function () {
+    const resp = await request(app).get(
+      "/jobs?title=J&minSalary=101&hasEquity=bananas"
+    );
+    expect(resp.statusCode).toEqual(400);
+    const resp2 = await request(app).get(
+      "/jobs?title=J&minSalary=bananas&hasEquity=true"
+    );
+    expect(resp2.statusCode).toEqual(400);
+  });
+  test("works: no results found when filtering", async function () {
+    const resp = await request(app).get("/jobs?title=M");
+    expect(resp.body).toEqual({ jobs: false });
   });
 });
 
