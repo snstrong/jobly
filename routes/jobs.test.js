@@ -187,6 +187,40 @@ describe("PATCH /jobs/:id", function () {
       .set("authorization", `Bearer ${u1Token}`);
     expect(resp.statusCode).toEqual(401);
   });
+  test("not found on no such job", async function () {
+    const resp = await request(app)
+      .patch(`/jobs/9999999`)
+      .send({
+        title: "new nope",
+      })
+      .set("authorization", `Bearer ${u4Token}`);
+    expect(resp.statusCode).toEqual(404);
+  });
+  test("bad request on handle change attempt", async function () {
+    const resp = await request(app)
+      .patch(`/jobs/${testJobIds[0]}`)
+      .send({
+        id: 6000,
+      })
+      .set("authorization", `Bearer ${u4Token}`);
+    expect(resp.statusCode).toEqual(400);
+  });
+  test("bad request on invalid data", async function () {
+    const resp1 = await request(app)
+      .patch(`/jobs/${testJobIds[0]}`)
+      .send({
+        salary: "not-an-int",
+      })
+      .set("authorization", `Bearer ${u4Token}`);
+    expect(resp1.statusCode).toEqual(400);
+    const resp2 = await request(app)
+      .patch(`/jobs/${testJobIds[0]}`)
+      .send({
+        equity: 0.005,
+      })
+      .set("authorization", `Bearer ${u4Token}`);
+    expect(resp2.statusCode).toEqual(400);
+  });
 });
 
 /************************************** DELETE /jobs/:id */
