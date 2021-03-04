@@ -172,6 +172,21 @@ describe("PATCH /jobs/:id", function () {
       },
     });
   });
+  test("unauth for anon", async function () {
+    const resp = await request(app).patch(`/jobs/${testJobIds[0]}`).send({
+      name: "J1-new",
+    });
+    expect(resp.statusCode).toEqual(401);
+  });
+  test("unauth for non-admin user", async function () {
+    const resp = await request(app)
+      .patch(`/jobs/${testJobIds[0]}`)
+      .send({
+        title: "J1-new",
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
 });
 
 /************************************** DELETE /jobs/:id */
