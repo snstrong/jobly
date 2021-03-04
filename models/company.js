@@ -47,10 +47,10 @@ class Company {
   static async findAll() {
     const companiesRes = await db.query(
       `SELECT handle,
-                  name,
-                  description,
-                  num_employees AS "numEmployees",
-                  logo_url AS "logoUrl"
+              name,
+              description,
+              num_employees AS "numEmployees",
+              logo_url AS "logoUrl"
            FROM companies
            ORDER BY name`
     );
@@ -101,9 +101,18 @@ class Company {
     );
 
     const company = companyRes.rows[0];
-
     if (!company) throw new NotFoundError(`No company: ${handle}`);
-
+    const jobRes = await db.query(
+      `SELECT j.id,
+              j.title,
+              j.salary,
+              j.equity
+      FROM jobs j
+      LEFT JOIN companies AS c ON c.handle = j.company_handle
+      WHERE j.company_handle = $1`,
+      [handle]
+    );
+    company.jobs = jobRes.rows;
     return company;
   }
 
