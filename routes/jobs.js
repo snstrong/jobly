@@ -33,7 +33,6 @@ router.post("/", ensureAdmin, async function (req, res, next) {
       throw new BadRequestError(errs);
     }
     const job = await Job.create(req.body);
-    console.log(job);
     return res.status(201).json({ job });
   } catch (err) {
     return next(err);
@@ -100,7 +99,7 @@ router.patch("/:id", ensureAdmin, async function (req, res, next) {
 
 router.delete("/:id", ensureAdmin, async function (req, res, next) {
   try {
-    await Job.remove(Integer(req.params.id));
+    await Job.remove(req.params.id);
     return res.json({ deleted: req.params.id });
   } catch (err) {
     return next(err);
