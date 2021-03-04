@@ -154,6 +154,25 @@ describe("GET /jobs/:id", function () {
 });
 
 /************************************** PATCH /jobs/:id */
+describe("PATCH /jobs/:id", function () {
+  test("works for admin", async function () {
+    const resp = await request(app)
+      .patch(`/jobs/${testJobIds[0]}`)
+      .send({
+        title: "J1-new",
+      })
+      .set("authorization", `Bearer ${u4Token}`);
+    expect(resp.body).toEqual({
+      job: {
+        id: testJobIds[0],
+        title: "J1-new",
+        salary: 100,
+        equity: "0.01",
+        companyHandle: "c1",
+      },
+    });
+  });
+});
 
 /************************************** DELETE /jobs/:id */
 
