@@ -2,7 +2,7 @@
 
 const db = require("../db");
 const { BadRequestError, NotFoundError } = require("../expressError");
-const { sqlForPartialUpdate } = require("../helpers/sql");
+const { sqlForPartialUpdate, sqlForJobFilter } = require("../helpers/sql");
 
 /** Related functions for jobs. */
 
@@ -44,6 +44,31 @@ class Job {
         LEFT JOIN companies AS c ON c.handle = j.company_handle`
     );
     return jobList.rows;
+  }
+
+  /** Filter selected jobs.
+   * criteria can include { title, minSalary, hasEquity }
+   * Will match results that contain whatever is given as "title", case-insensitive, not just exact matches
+   * Returns [{ id, title, salary, equity, companyHandle, companyName }, ...]
+   * */
+  static async filter(criteria) {
+    const sqlized = sqlForJobFilter(criteria);
+    const jobsRes = await db.query(
+      `SELECT j.id,
+            j.title,
+            j.salary,
+            j.equity,
+            j.company_handle AS "companyHandle",
+            c.name AS "companyName"
+        FROM jobs j 
+        LEFT JOIN companies AS c ON c.handle = j.company_handle
+        WHERE ${sqlized.filterClause}`,
+      sqlized.values
+    );
+    if (jobsRes.rows.length === 0) {
+      return false;
+    }
+    return jobsRes.rows;
   }
 
   /** Given a job id, return data about job.
