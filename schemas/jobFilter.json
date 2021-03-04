@@ -2,14 +2,13 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "$id": "http://example.com/example.json",
   "type": "object",
-  "title": "Job create schema",
+  "title": "Job filter schema",
   "default": {},
   "examples": [
     {
       "title": "Jr Dev",
-      "salary": 60000,
-      "equity": "0.1",
-      "companyHandle": "c1"
+      "minSalary": "60000",
+      "hasEquity": "true"
     }
   ],
   "required": [],
@@ -21,29 +20,21 @@
       "default": "",
       "examples": ["Jr Dev"]
     },
-    "salary": {
+    "minSalary": {
       "$id": "#/properties/salary",
-      "type": "integer",
+      "type": "string",
       "title": "The salary schema",
       "description": "An explanation about the purpose of this instance.",
       "default": 0,
       "examples": [60000]
     },
-    "equity": {
+    "hasEquity": {
       "$id": "#/properties/equity",
       "type": "string",
       "title": "The equity schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": ["0.1"]
-    },
-    "companyHandle": {
-      "$id": "#/properties/company_handle",
-      "type": "string",
-      "title": "The company_handle schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": "",
-      "examples": ["c1"]
+      "examples": [true]
     }
   },
   "additionalProperties": false

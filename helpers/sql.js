@@ -78,10 +78,23 @@ function sqlForJobFilter(filterCriteria) {
       filterArr.push(`title ILIKE $${i + 1}`);
       filterCriteria.title = `%${filterCriteria.title}%`;
     } else if (keys[i] === "minSalary") {
-      filterArr.push(`salary >= $${i + 1}`);
+      if (parseInt(filterCriteria.minSalary)) {
+        filterArr.push(`salary >= $${i + 1}`);
+      } else {
+        throw new BadRequestError(
+          `Unaccepted value for minSalary: ${filterCriteria.minSalary}`
+        );
+      }
     } else if (keys[i] === "hasEquity") {
-      if (filterCriteria.hasEquity === true) {
+      if (filterCriteria.hasEquity === "true") {
         filterArr.push(`equity > 0`);
+        filterCriteria.hasEquity = true;
+      } else if (filterCriteria.hasEquity === "false") {
+        filterCriteria.hasEquity = false;
+      } else {
+        throw new BadRequestError(
+          `Unaccepted value for hasEquity: ${filterCriteria.hasEquity}`
+        );
       }
     } else {
       throw new BadRequestError(`Unaccepted field: ${keys[i]}`);
