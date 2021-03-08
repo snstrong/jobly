@@ -335,10 +335,28 @@ describe("POST /users/:username/jobs/:id", function () {
       .set("authorization", `Bearer ${u1Token}`);
     expect(resp.body).toEqual({ applied: `${testJobIds[0]}` });
   });
-  test("works for admin", async function () {});
-  test("fails for anon", async function () {});
-  test("fails for wrong user", async function () {});
-  test("fails if id not parsable as int", async function () {});
+  test("works for admin", async function () {
+    const resp = await request(app)
+      .post(`/users/u1/jobs/${testJobIds[0]}`)
+      .set("authorization", `Bearer ${u4Token}`);
+    expect(resp.body).toEqual({ applied: `${testJobIds[0]}` });
+  });
+  test("fails for anon", async function () {
+    const resp = await request(app).post(`/users/u1/jobs/${testJobIds[0]}`);
+    expect(resp.statusCode).toEqual(401);
+  });
+  test("fails for wrong user", async function () {
+    const resp = await request(app)
+      .post(`/users/u3/jobs/${testJobIds[0]}`)
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
+  test("fails if id not parsable as int", async function () {
+    const resp = await request(app)
+      .post(`/users/u1/jobs/job1`)
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(400);
+  });
 });
 
 /************************************** DELETE /users/:username */
