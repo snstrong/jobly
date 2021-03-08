@@ -326,6 +326,15 @@ describe("PATCH /users/:username", () => {
   });
 });
 
+/************************************** POST /users/:username/jobs/:id */
+describe("POST /users/:username/jobs/:id", function () {
+  test("works for correct user", async function () {});
+  test("works for admin", async function () {});
+  test("fails for anon", async function () {});
+  test("fails for wrong user", async function () {});
+  test("fails if id not parsable as int", async function () {});
+});
+
 /************************************** DELETE /users/:username */
 
 describe("DELETE /users/:username", function () {
