@@ -13,6 +13,7 @@ const {
   commonAfterAll,
   u1Token,
   u4Token,
+  testJobIds,
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -328,7 +329,12 @@ describe("PATCH /users/:username", () => {
 
 /************************************** POST /users/:username/jobs/:id */
 describe("POST /users/:username/jobs/:id", function () {
-  test("works for correct user", async function () {});
+  test("works for correct user", async function () {
+    const resp = await request(app)
+      .post(`/users/u1/jobs/${testJobIds[0]}`)
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.body).toEqual({ applied: `${testJobIds[0]}` });
+  });
   test("works for admin", async function () {});
   test("fails for anon", async function () {});
   test("fails for wrong user", async function () {});

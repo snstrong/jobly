@@ -10,7 +10,7 @@ const {
   ensureAdmin,
   ensureAdminOrCorrectUser,
 } = require("../middleware/auth");
-const { BadRequestError } = require("../expressError");
+const { BadRequestError, ExpressError } = require("../expressError");
 const User = require("../models/user");
 const { createToken } = require("../helpers/tokens");
 const userNewSchema = require("../schemas/userNew.json");
@@ -105,6 +105,30 @@ router.patch(
 
       const user = await User.update(req.params.username, req.body);
       return res.json({ user });
+    } catch (err) {
+      return next(err);
+    }
+  }
+);
+
+/** POST /users/[username]/jobs/[id]
+ *  Route to apply for a job.
+ *  Auth required: admin or same-user
+ */
+
+router.post(
+  "/:username/jobs/:id",
+  ensureAdminOrCorrectUser,
+  async function (req, res, next) {
+    try {
+      if (!parseInt(req.params.id)) {
+        throw new BadRequestError(`Invalid job id: ${req.params.id}`);
+      }
+      const application = await User.apply(req.params.username, req.params.id);
+      if (!application) {
+        throw new ExpressError("Something went wrong", 500);
+      }
+      return res.json({ applied: req.params.id });
     } catch (err) {
       return next(err);
     }
