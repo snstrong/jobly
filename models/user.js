@@ -10,6 +10,7 @@ const {
 } = require("../expressError");
 
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
+const Job = require("./job");
 
 /** Related functions for users. */
 
@@ -193,6 +194,11 @@ class User {
    * Throws BadRequestError on duplicates.
    **/
   static async apply(username, jobId) {
+    // Make sure user and job exist
+    // Will throw 404 if not
+    await User.get(username);
+    await Job.get(jobId);
+
     let result = await db.query(
       `INSERT INTO applications
         (username, job_id)
