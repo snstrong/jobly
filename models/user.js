@@ -118,7 +118,7 @@ class User {
   /** Given a username, return data about user.
    *
    * Returns { username, first_name, last_name, is_admin, jobs }
-   *   where jobs is { id, title, company_handle, company_name, state }
+   *   where jobs is an array of ids for jobs the user has applied for.
    *
    * Throws NotFoundError if user not found.
    **/
@@ -126,18 +126,31 @@ class User {
   static async get(username) {
     const userRes = await db.query(
       `SELECT username,
-                  first_name AS "firstName",
-                  last_name AS "lastName",
-                  email,
-                  is_admin AS "isAdmin"
+              first_name AS "firstName",
+              last_name AS "lastName",
+              email,
+              is_admin AS "isAdmin"
            FROM users
            WHERE username = $1`,
       [username]
     );
-
     const user = userRes.rows[0];
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
+
+    const jobAppIds = await db.query(
+      `SELECT job_id AS "jobId"
+      FROM applications
+      WHERE username = $1`,
+      [username]
+    );
+
+    user.jobs = [];
+    if (jobAppIds.rows.length > 0) {
+      for (let i of jobAppIds.rows) {
+        user.jobs.push(i.jobId);
+      }
+    }
 
     return user;
   }
@@ -196,8 +209,8 @@ class User {
   static async apply(username, jobId) {
     // Make sure user and job exist
     // Will throw 404 if not
-    await User.get(username);
-    await Job.get(jobId);
+    let user = await User.get(username);
+    let job = await Job.get(jobId);
 
     let result = await db.query(
       `INSERT INTO applications

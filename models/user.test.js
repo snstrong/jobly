@@ -141,7 +141,18 @@ describe("get", function () {
       lastName: "U1L",
       email: "u1@email.com",
       isAdmin: false,
+      jobs: [],
     });
+    let application = await db.query(
+      `
+      INSERT INTO applications
+      (username, job_id)
+      VALUES ($1, $2)
+      RETURNING username, job_id AS "jobId"`,
+      ["u1", testJobIds[0]]
+    );
+    user = await User.get("u1");
+    expect(user.jobs).toEqual([testJobIds[0]]);
   });
 
   test("not found if no such user", async function () {
