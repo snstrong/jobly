@@ -64,6 +64,11 @@ function sqlForCompanyFilter(filterCriteria) {
   };
 }
 
+/** Formats data for use in filtering jobs
+ *
+ * filterCriteria can include { title, minSalary, hasEquity }
+ * returns {filterClause: "", values: []}
+ */
 function sqlForJobFilter(filterCriteria) {
   const keys = Object.keys(filterCriteria);
   if (keys.length === 0) {
@@ -86,10 +91,16 @@ function sqlForJobFilter(filterCriteria) {
         );
       }
     } else if (keys[i] === "hasEquity") {
-      if (filterCriteria.hasEquity === "true") {
+      if (
+        filterCriteria.hasEquity === "true" ||
+        filterCriteria.hasEquity === true
+      ) {
         filterArr.push(`equity > 0`);
         filterCriteria.hasEquity = true;
-      } else if (filterCriteria.hasEquity === "false") {
+      } else if (
+        filterCriteria.hasEquity === "false" ||
+        filterCriteria.hasEquity === false
+      ) {
         filterCriteria.hasEquity = false;
       } else {
         throw new BadRequestError(

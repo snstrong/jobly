@@ -142,7 +142,7 @@ describe("filter", function () {
     ]);
   });
   test("works: filters based on hasEquity", async function () {
-    let criterion = { hasEquity: true };
+    let criterion = { hasEquity: "true" };
     let filteredJobs = await Job.filter(criterion);
     expect(filteredJobs).toEqual([
       {
@@ -167,7 +167,7 @@ describe("filter", function () {
     let criteria = {
       title: "J",
       minSalary: 99,
-      hasEquity: true,
+      hasEquity: "true",
     };
     let filteredJobs = await Job.filter(criteria);
     expect(filteredJobs).toEqual([
