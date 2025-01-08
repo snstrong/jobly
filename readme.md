@@ -2,7 +2,11 @@
 
 This is the Express backend for Jobly, version 2.
 
-It also includes seed files for a PostgreSQL database for the project.
+Auth: JWT
+
+Tests: Jest
+
+This repo also includes seed files for a PostgreSQL database for the project.
 
 To run Jobly:
 
