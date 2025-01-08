@@ -2,7 +2,9 @@
 
 This is the Express backend for Jobly, version 2.
 
-To run this:
+It also includes seed files for a PostgreSQL database for the project.
+
+To run Jobly:
 
     node server.js
     
